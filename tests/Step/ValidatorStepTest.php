@@ -10,7 +10,7 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->validator = $this->getMockBuilder('Symfony\Component\Validator\Validator')
+        $this->validator = $this->getMockBuilder('Symfony\Component\Validator\Validator\RecursiveValidator')
             ->disableOriginalConstructor()
             ->getMock();
 
