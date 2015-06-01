@@ -26,7 +26,7 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
         $this->step->add('title', $constraint = new Constraints\NotNull());
 
         $this->validator->expects($this->once())
-            ->method('validateValue')
+            ->method('validate')
             ->will($this->returnValue(
                 $list = new ConstraintViolationList([
                     $this->getMockBuilder('Symfony\Component\Validator\ConstraintViolation')
@@ -53,7 +53,7 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
         $this->step->throwExceptions();
 
         $this->validator->expects($this->once())
-        ->method('validateValue')
+        ->method('validate')
         ->will($this->returnValue(
         $list = new ConstraintViolationList([
             $this->getMockBuilder('Symfony\Component\Validator\ConstraintViolation')
