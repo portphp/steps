@@ -2,7 +2,7 @@
 
 namespace Port\Steps\Step;
 
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Port\Exception\ValidationException;
@@ -84,7 +84,7 @@ class ValidatorStep implements PriorityStep
     public function process(&$item)
     {
         $constraints = new Constraints\Collection($this->constraints);
-        $list = $this->validator->validateValue($item, $constraints);
+        $list = $this->validator->validate($item, $constraints);
 
         if (count($list) > 0) {
             $this->violations[$this->line] = $list;
