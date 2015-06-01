@@ -14,7 +14,7 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->filter = new ValidatorStep($this->validator);
+        $this->step = new ValidatorStep($this->validator);
     }
 
     public function testProcess()
@@ -23,7 +23,7 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
             'title' => null,
         ];
 
-        $this->filter->add('title', $constraint = new Constraints\NotNull());
+        $this->step->add('title', $constraint = new Constraints\NotNull());
 
         $this->validator->expects($this->once())
             ->method('validateValue')
@@ -35,9 +35,9 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
                 ])
             ));
 
-        $this->assertFalse($this->filter->process($data));
+        $this->assertFalse($this->step->process($data));
 
-        $this->assertEquals([1 => $list], $this->filter->getViolations());
+        $this->assertEquals([1 => $list], $this->step->getViolations());
     }
 
     /**
@@ -49,8 +49,8 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
             'title' => null,
         ];
 
-        $this->filter->add('title', $constraint = new Constraints\NotNull());
-        $this->filter->throwExceptions();
+        $this->step->add('title', $constraint = new Constraints\NotNull());
+        $this->step->throwExceptions();
 
         $this->validator->expects($this->once())
         ->method('validateValue')
@@ -62,11 +62,11 @@ class ValidatorStepTest extends \PHPUnit_Framework_TestCase
             ])
         ));
 
-        $this->assertFalse($this->filter->process($data));
+        $this->assertFalse($this->step->process($data));
     }
 
     public function testPriority()
     {
-        $this->assertEquals(128, $this->filter->getPriority());
+        $this->assertEquals(128, $this->step->getPriority());
     }
 }
