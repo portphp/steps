@@ -1,8 +1,8 @@
 <?php
 
-namespace Port\Tests\Step;
+namespace Port\Steps\Tests\Step;
 
-use Port\Step\MappingStep;
+use Port\Steps\Step\MappingStep;
 
 class MappingStepTest extends \PHPUnit_Framework_TestCase
 {

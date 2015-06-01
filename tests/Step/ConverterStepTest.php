@@ -1,8 +1,8 @@
 <?php
 
-namespace Port\Tests\Step;
+namespace Port\Steps\Tests\Step;
 
-use Port\Step\ConverterStep;
+use Port\Steps\Step\ConverterStep;
 
 class ConverterStepTest extends \PHPUnit_Framework_TestCase
 {

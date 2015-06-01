@@ -1,8 +1,8 @@
 <?php
 
-namespace Port\Tests\Step;
+namespace Port\Steps\Tests\Step;
 
-use Port\Step\ValidatorStep;
+use Port\Steps\Step\ValidatorStep;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintViolationList;
 

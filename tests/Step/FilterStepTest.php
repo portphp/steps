@@ -1,8 +1,8 @@
 <?php
 
-namespace Port\Tests\Step;
+namespace Port\Steps\Tests\Step;
 
-use Port\Step\FilterStep;
+use Port\Steps\Step\FilterStep;
 
 class FilterStepTest extends \PHPUnit_Framework_TestCase
 {
