@@ -35,7 +35,7 @@ class FilterStep implements Step
     /**
      * {@inheritdoc}
      */
-    public function process(&$item)
+    public function process($item, callable $next)
     {
         foreach (clone $this->filters as $filter) {
             if (false === call_user_func($filter, $item)) {
@@ -43,6 +43,6 @@ class FilterStep implements Step
             }
         }
 
-        return true;
+        return $next($item);
     }
 }

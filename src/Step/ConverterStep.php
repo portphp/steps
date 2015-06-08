@@ -40,12 +40,12 @@ class ConverterStep implements Step
     /**
      * {@inheritdoc}
      */
-    public function process(&$item)
+    public function process($item, callable $next)
     {
         foreach ($this->converters as $converter) {
             $item = call_user_func($converter, $item);
         }
 
-        return true;
+        return $next($item);
     }
 }

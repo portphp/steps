@@ -1,0 +1,10 @@
+suites:
+  step_suite:
+    namespace: Port\Steps
+    psr4_prefix: Port\Steps
+formatter.name: pretty
+extensions:
+  - PhpSpec\Extension\CodeCoverageExtension
+code_coverage:
+  format: clover
+  output: coverage.clover
