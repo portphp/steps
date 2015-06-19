@@ -7,6 +7,7 @@ use Port\Steps\Step;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -19,15 +20,15 @@ class MappingStep implements Step
     private $mappings = [];
 
     /**
-     * @var PropertyAccessor
+     * @var PropertyAccessorInterface
      */
     private $accessor;
 
     /**
-     * @param array            $mappings
-     * @param PropertyAccessor $accessor
+     * @param array                     $mappings
+     * @param PropertyAccessorInterface $accessor
      */
-    public function __construct(array $mappings = [], PropertyAccessor $accessor = null)
+    public function __construct(array $mappings = [], PropertyAccessorInterface $accessor = null)
     {
         $this->mappings = $mappings;
         $this->accessor = $accessor ?: new PropertyAccessor();
@@ -51,7 +52,7 @@ class MappingStep implements Step
      *
      * @throws MappingException
      */
-    public function process(&$item)
+    public function process($item, callable $next)
     {
         try {
             foreach ($this->mappings as $from => $to) {
@@ -71,5 +72,7 @@ class MappingStep implements Step
         } catch (UnexpectedTypeException $exception) {
             throw new MappingException('Unable to map item', null, $exception);
         }
+
+        return $next($item);
     }
 }

@@ -31,7 +31,7 @@ class ValueConverterStep implements Step
     /**
      * {@inheritdoc}
      */
-    public function process(&$item)
+    public function process($item, callable $next)
     {
         $accessor = new PropertyAccessor();
 
@@ -43,6 +43,6 @@ class ValueConverterStep implements Step
             }
         }
 
-        return true;
+        return $next($item);
     }
 }

@@ -81,7 +81,7 @@ class ValidatorStep implements PriorityStep
     /**
      * {@inheritdoc}
      */
-    public function process(&$item)
+    public function process($item, callable $next)
     {
         $constraints = new Constraints\Collection($this->constraints);
         $list = $this->validator->validate($item, $constraints);
@@ -96,7 +96,9 @@ class ValidatorStep implements PriorityStep
 
         $this->line++;
 
-        return 0 === count($list);
+        if (0 === count($list)) {
+            return $next($item);
+        }
     }
 
     /**

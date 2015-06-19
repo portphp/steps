@@ -1,0 +1,5 @@
+suites:
+  step_suite:
+    namespace: Port\Steps
+    psr4_prefix: Port\Steps
+formatter.name: pretty

@@ -3,12 +3,12 @@
 namespace Port\Steps;
 
 use Port\Exception;
-use Port\Exception\UnexpectedTypeException;
 use Port\Reader;
 use Port\Result;
 use Port\Step\PriorityStep;
 use Port\Workflow;
 use Port\Writer;
+use Port\Steps\Exception\BreakException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -49,11 +49,6 @@ class StepAggregator implements Workflow, LoggerAwareInterface
      * @var Writer[]
      */
     private $writers = [];
-
-    /**
-     * @var boolean
-     */
-    protected $shouldStop = false;
 
     /**
      * @param Reader $reader
@@ -114,36 +109,16 @@ class StepAggregator implements Workflow, LoggerAwareInterface
             $writer->prepare();
         }
 
-        if (is_callable('pcntl_signal')) {
-            pcntl_signal(SIGTERM, array($this, 'stop'));
-            pcntl_signal(SIGINT, array($this, 'stop'));
-        }
+        $pipeline = $this->buildPipeline();
 
         // Read all items
         foreach ($this->reader as $index => $item) {
-
-            if (is_callable('pcntl_signal_dispatch')) {
-                pcntl_signal_dispatch();
-            }
-
-            if ($this->shouldStop) {
-                break;
-            }
-
             try {
-                foreach (clone $this->steps as $step) {
-                    if (false === $step->process($item)) {
-                        continue 2;
-                    }
+                if (false === $pipeline($item)) {
+                    continue;
                 }
-
-                if (!is_array($item) && !($item instanceof \ArrayAccess && $item instanceof \Traversable)) {
-                    throw new UnexpectedTypeException($item, 'array');
-                }
-
-                foreach ($this->writers as $writer) {
-                    $writer->writeItem($item);
-                }
+            } catch(BreakException $e) {
+                break;
             } catch(Exception $e) {
                 if (!$this->skipItemOnFailure) {
                     throw $e;
@@ -161,14 +136,6 @@ class StepAggregator implements Workflow, LoggerAwareInterface
         }
 
         return new Result($this->name, $startTime, new \DateTime, $count, $exceptions);
-    }
-
-    /**
-     * Stops processing and force return Result from process() function
-     */
-    public function stop()
-    {
-        $this->shouldStop = true;
     }
 
     /**
@@ -191,5 +158,36 @@ class StepAggregator implements Workflow, LoggerAwareInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Builds the pipeline
+     *
+     * @return callable
+     */
+    private function buildPipeline()
+    {
+        $nextCallable = function ($item) {
+            // the final callable is a no-op
+        };
+
+        $steps = clone $this->steps;
+
+        // Use illogically large and small priorities
+        // TODO: workaround SplPriorityQueue
+        $steps->insert(new Step\PcntlStep, 256);
+        $steps->insert(new Step\ArrayCheckStep, -255);
+
+        foreach ($this->writers as $writer) {
+            $steps->insert(new Step\WriterStep($writer), -256);
+        }
+
+        foreach ($steps as $step) {
+            $nextCallable = function ($item) use ($step, $nextCallable) {
+                return $step->process($item, $nextCallable);
+            };
+        }
+
+        return $nextCallable;
     }
 }
