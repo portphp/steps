@@ -182,6 +182,9 @@ class StepAggregator implements Workflow, LoggerAwareInterface
             $steps->insert(new Step\WriterStep($writer), -256);
         }
 
+        $steps = iterator_to_array($steps);
+        $steps = array_reverse($steps);
+
         foreach ($steps as $step) {
             $nextCallable = function ($item) use ($step, $nextCallable) {
                 return $step->process($item, $nextCallable);
