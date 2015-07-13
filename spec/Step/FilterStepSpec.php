@@ -43,7 +43,7 @@ class FilterStepSpec extends ObjectBehavior
             return false;
         })->shouldReturn($this);
 
-        $this->process(
+        $this->shouldThrow('Port\Steps\Exception\FilterException')->duringProcess(
             $item,
             function($item) use ($step, $next) {
                 return $step->process($item, $next);

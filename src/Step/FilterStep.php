@@ -2,6 +2,7 @@
 
 namespace Port\Steps\Step;
 
+use Port\Steps\Exception\FilterException;
 use Port\Steps\Step;
 
 /**
@@ -39,7 +40,7 @@ class FilterStep implements Step
     {
         foreach (clone $this->filters as $filter) {
             if (false === call_user_func($filter, $item)) {
-                return false;
+                throw new FilterException();
             }
         }
 
