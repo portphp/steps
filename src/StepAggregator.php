@@ -74,7 +74,7 @@ class StepAggregator implements Workflow, LoggerAwareInterface
      */
     public function addStep(Step $step, $priority = null)
     {
-        $priority = $step instanceof PriorityStep && null === $priority ? $step->getPriority() : null;
+        $priority = null === $priority && $step instanceof PriorityStep ? $step->getPriority() : $priority;
         $priority = null === $priority ? 0 : $priority;
 
         $this->steps->insert($step, $priority);
