@@ -9,6 +9,7 @@ use Port\Step\PriorityStep;
 use Port\Workflow;
 use Port\Writer;
 use Port\Steps\Exception\BreakException;
+use Port\Steps\Exception\FilterException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -114,9 +115,9 @@ class StepAggregator implements Workflow, LoggerAwareInterface
         // Read all items
         foreach ($this->reader as $index => $item) {
             try {
-                if (false === $pipeline($item)) {
-                    continue;
-                }
+                $pipeline($item);
+            } catch(FilterException $e) {
+                continue;
             } catch(BreakException $e) {
                 break;
             } catch(Exception $e) {
