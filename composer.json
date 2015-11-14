@@ -24,7 +24,8 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "portphp/portphp": "^1.0@dev"
+        "portphp/portphp": "^1.0@dev",
+        "seld/signal-handler": "^1.0"
     },
     "autoload": {
         "psr-4": {

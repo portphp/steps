@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Seld\Signal\SignalHandler;
 
 /**
  * A mediator between a reader and one or more writers and converters
@@ -105,6 +106,8 @@ class StepAggregator implements Workflow, LoggerAwareInterface
         $exceptions = new \SplObjectStorage();
         $startTime  = new \DateTime;
 
+        $signal = SignalHandler::create(['SIGTERM', 'SIGINT'], $this->logger);
+
         foreach ($this->writers as $writer) {
             $writer->prepare();
         }
@@ -114,11 +117,13 @@ class StepAggregator implements Workflow, LoggerAwareInterface
         // Read all items
         foreach ($this->reader as $index => $item) {
             try {
+                if ($signal->isTriggered()) {
+                    break;
+                }
+
                 if (false === $pipeline($item)) {
                     continue;
                 }
-            } catch(BreakException $e) {
-                break;
             } catch(Exception $e) {
                 if (!$this->skipItemOnFailure) {
                     throw $e;
@@ -175,7 +180,6 @@ class StepAggregator implements Workflow, LoggerAwareInterface
 
         // Use illogically large and small priorities
         // TODO: workaround SplPriorityQueue
-        $steps->insert(new Step\PcntlStep, 256);
         $steps->insert(new Step\ArrayCheckStep, -255);
 
         foreach ($this->writers as $writer) {
