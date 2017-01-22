@@ -4,6 +4,8 @@ namespace spec\Port\Steps\Step;
 
 use Port\Steps\Step;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use PhpSpec\ObjectBehavior;
@@ -69,12 +71,16 @@ class ValidatorStepSpec extends ObjectBehavior
         $this->getViolations()->shouldReturn([1 => $list]);
     }
 
-    function it_throws_an_exception_during_process_when_validation_fails(Step $step, ValidatorInterface $validator, Constraint $constraint, ConstraintViolationListInterface $list)
-    {
+    function it_throws_an_exception_during_process_when_validation_fails(
+        Step $step,
+        ValidatorInterface $validator,
+        Constraint $constraint,
+        ConstraintViolation $violation
+    ) {
         $next = function() {};
         $item = ['foo' => true];
         $step->process($item, $next)->shouldNotBeCalled();
-        $list->count()->willReturn(1);
+        $list = new ConstraintViolationList([$violation->getWrappedObject()]);
         $validator->validate($item, Argument::type('Symfony\Component\Validator\Constraints\Collection'))->willReturn($list);
 
         $this->add('foo', $constraint)->shouldReturn($this);
