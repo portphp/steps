@@ -56,8 +56,8 @@ class FilterStepSpec extends ObjectBehavior
         $next = function() {};
         $item = [];
         $step->process($item, $next)->shouldNotBeCalled();
-        $dummyFilter1->__invoke($item)->shouldNotBeCalled();
-        $dummyFilter2->__invoke($item)->willReturn(false);
+        $dummyFilter1->__invoke($item)->willReturn(false);
+        $dummyFilter2->__invoke($item)->shouldNotBeCalled();
 
         $this->add($dummyFilter1)
             ->add($dummyFilter2);
