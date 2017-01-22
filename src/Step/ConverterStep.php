@@ -3,7 +3,6 @@
 namespace Port\Steps\Step;
 
 use Port\Steps\Step;
-use Port\Exception\UnexpectedTypeException;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
