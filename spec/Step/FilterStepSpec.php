@@ -2,8 +2,6 @@
 
 namespace spec\Port\Steps\Step;
 
-use Port\Filter\OffsetFilter;
-use Port\Filter\ValidatorFilter;
 use Port\Steps\Step;
 use PhpSpec\ObjectBehavior;
 
