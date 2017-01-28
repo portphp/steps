@@ -39,7 +39,7 @@ class ValueConverterStep implements Step
             foreach ($converters as $converter) {
                 $orgValue = $accessor->getValue($item, $property);
                 $value = call_user_func($converter, $orgValue);
-                $accessor->setValue($item,$property,$value);
+                $accessor->setValue($item, $property, $value);
             }
         }
 
