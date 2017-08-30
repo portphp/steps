@@ -24,7 +24,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "portphp/portphp": "^1.0@dev",
+        "portphp/portphp": "^1.0.0",
         "seld/signal-handler": "^1.0",
         "symfony/property-access": "^2.3 || ^3.0",
         "symfony/validator": "^2.5 || ^3.0"
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }
