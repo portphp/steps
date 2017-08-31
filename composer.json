@@ -23,7 +23,7 @@
         "docs": "https://portphp.readthedocs.org"
     },
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.6.0",
         "portphp/portphp": "^1.0.0",
         "seld/signal-handler": "^1.0",
         "symfony/property-access": "^2.3 || ^3.0",
