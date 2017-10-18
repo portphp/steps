@@ -94,7 +94,7 @@ class ValidatorStepSpec extends ObjectBehavior
         );
     }
 
-    function it_increments_line_number_when_when_exceptions_are_on(
+    function it_increments_line_number_when_exceptions_are_on(
         Step $step,
         ValidatorInterface $validator,
         Constraint $constraint,
