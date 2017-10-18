@@ -90,10 +90,10 @@ class ValidatorStep implements PriorityStep
             $this->violations[$this->line] = $list;
 
             if ($this->throwExceptions) {
-                $exception = new ValidationException($list, $this->line);
+                $errorLine = $this->line;
                 $this->line++;
 
-                throw $exception;
+                throw new ValidationException($list, $errorLine);
             }
         }
 
