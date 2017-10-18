@@ -93,4 +93,40 @@ class ValidatorStepSpec extends ObjectBehavior
             }
         );
     }
+
+    function it_increments_line_number_when_when_exceptions_are_on(
+        Step $step,
+        ValidatorInterface $validator,
+        Constraint $constraint,
+        ConstraintViolation $violation
+    ){
+        $next = function() {};
+        $itemOne = ['foo' => true];
+        $itemTwo = ['bar' => true];
+        $expectedViolations = new ConstraintViolationList([$violation->getWrappedObject()]);
+
+        $validator->validate(Argument::any(), Argument::type('Symfony\Component\Validator\Constraints\Collection'))->willReturn($expectedViolations);
+
+        $this->add('foo', $constraint)->shouldReturn($this);
+        $this->throwExceptions();
+
+        $this->shouldThrow('Port\Exception\ValidationException')->duringProcess(
+            $itemOne,
+            function($item) use ($step, $next) {
+                return $step->process($item, $next);
+            }
+        );
+
+        $this->shouldThrow('Port\Exception\ValidationException')->duringProcess(
+            $itemTwo,
+            function($item) use ($step, $next) {
+                return $step->process($item, $next);
+            }
+        );
+
+        $this->getViolations()->shouldReturn([
+            1 => $expectedViolations,
+            2 => $expectedViolations
+        ]);
+    }
 }
