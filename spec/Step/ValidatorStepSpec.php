@@ -93,4 +93,21 @@ class ValidatorStepSpec extends ObjectBehavior
             }
         );
     }
+
+    function it_validates_an_item_from_metadata(
+        ValidatorInterface $validator,
+        ConstraintViolationListInterface $list
+    ) {
+        $next = function() {};
+        $list->count()->willReturn(1);
+        $item = new \stdClass();
+        $validator->validate($item)->willReturn($list);
+
+        $this->process(
+            $item,
+            $next
+        );
+
+        $this->getViolations()->shouldReturn([1 => $list]);
+    }
 }

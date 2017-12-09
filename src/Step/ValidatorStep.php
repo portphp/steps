@@ -83,8 +83,12 @@ class ValidatorStep implements PriorityStep
      */
     public function process($item, callable $next)
     {
-        $constraints = new Constraints\Collection($this->constraints);
-        $list = $this->validator->validate($item, $constraints);
+        if (count($this->constraints) > 0) {
+            $constraints = new Constraints\Collection($this->constraints);
+            $list = $this->validator->validate($item, $constraints);
+        } else {
+            $list = $this->validator->validate($item);
+        }
 
         if (count($list) > 0) {
             $this->violations[$this->line] = $list;
