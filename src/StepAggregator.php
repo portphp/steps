@@ -40,9 +40,9 @@ class StepAggregator implements Workflow, LoggerAwareInterface
     private $skipItemOnFailure = false;
 
     /**
-     * @var \SplPriorityQueue
+     * @var array
      */
-    private $steps;
+    private $steps = [];
 
     /**
      * @var Writer[]
@@ -60,7 +60,6 @@ class StepAggregator implements Workflow, LoggerAwareInterface
 
         // Defaults
         $this->logger = new NullLogger();
-        $this->steps = new \SplPriorityQueue();
     }
 
     /**
@@ -76,7 +75,7 @@ class StepAggregator implements Workflow, LoggerAwareInterface
         $priority = null === $priority && $step instanceof PriorityStep ? $step->getPriority() : $priority;
         $priority = null === $priority ? 0 : $priority;
 
-        $this->steps->insert($step, $priority);
+        $this->steps[$priority][] = $step;
 
         return $this;
     }
@@ -174,25 +173,39 @@ class StepAggregator implements Workflow, LoggerAwareInterface
             // the final callable is a no-op
         };
 
-        $steps = clone $this->steps;
-
-        // Use illogically large and small priorities
-        // TODO: workaround SplPriorityQueue
-        $steps->insert(new Step\ArrayCheckStep, -255);
-
-        foreach ($this->writers as $writer) {
-            $steps->insert(new Step\WriterStep($writer), -256);
-        }
-
-        $steps = iterator_to_array($steps);
-        $steps = array_reverse($steps);
-
-        foreach ($steps as $step) {
+        foreach ($this->getStepsSortedDescByPriority() as $step) {
             $nextCallable = function ($item) use ($step, $nextCallable) {
                 return $step->process($item, $nextCallable);
             };
         }
 
         return $nextCallable;
+    }
+
+    /**
+     * Sorts the internal list of steps and writers by priority in reverse order.
+     *
+     * @return Step[]
+     */
+    private function getStepsSortedDescByPriority()
+    {
+        $steps = $this->steps;
+        // Use illogically large and small priorities
+        $steps[-255][] = new Step\ArrayCheckStep;
+        foreach ($this->writers as $writer) {
+            $steps[-256][] = new Step\WriterStep($writer);
+        }
+
+        ksort($steps);
+
+        $sortedStep = [];
+        /** @var Step[] $stepsAtSamePriority */
+        foreach ($steps as $stepsAtSamePriority) {
+            foreach ($stepsAtSamePriority as $step) {
+                $sortedStep[] = $step;
+            }
+        }
+
+        return array_reverse($sortedStep);
     }
 }

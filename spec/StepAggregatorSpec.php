@@ -105,7 +105,6 @@ class StepAggregatorSpec extends ObjectBehavior
 
     function it_executes_the_writers_in_the_same_order_that_the_insertion(Writer $writerFoo, Writer $writerBar, Writer $writerBaz)
     {
-        $data = '';
         $this->beConstructedWith(new ArrayReader([['test' => 'test']]));
         $writerFoo->prepare()->shouldBeCalled();
         $writerBar->prepare()->shouldBeCalled();
