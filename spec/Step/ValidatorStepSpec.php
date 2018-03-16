@@ -71,6 +71,23 @@ class ValidatorStepSpec extends ObjectBehavior
         $this->getViolations()->shouldReturn([1 => $list]);
     }
 
+    function it_throws_an_exception_when_option_is_not_supported(Step $step, ValidatorInterface $validator, Constraint $constraint, ConstraintViolation $violation)
+    {
+        $next = function() {};
+        $item = ['foo' => true];
+        $step->process($item, $next)->shouldNotBeCalled();
+
+        $this->add('foo', $constraint)->shouldReturn($this);
+        $this->addOption('bar', 'baz')->shouldReturn($this);
+
+        $this->shouldThrow('Symfony\Component\Validator\Exception\InvalidOptionsException')->duringProcess(
+            $item,
+            function($item) use ($step, $next) {
+                return $step->process($item, $next);
+            }
+        );
+    }
+
     function it_throws_an_exception_during_process_when_validation_fails(
         Step $step,
         ValidatorInterface $validator,
