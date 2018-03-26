@@ -53,11 +53,11 @@ class ValidatorStep implements PriorityStep
      */
     public function add($field, Constraint $constraint)
     {
-        if (!isset($this->constraints[$field])) {
-            $this->constraints[$field] = [];
+        if (!isset($this->constraints['fields'][$field])) {
+            $this->constraints['fields'][$field] = [];
         }
 
-        $this->constraints[$field][] = $constraint;
+        $this->constraints['fields'][$field][] = $constraint;
 
         return $this;
     }
@@ -76,6 +76,21 @@ class ValidatorStep implements PriorityStep
     public function getViolations()
     {
         return $this->violations;
+    }
+
+    /**
+     * Add additional options to the Collection constraint.
+     *
+     * @param string $option
+     * @param mixed  $optionValue
+     *
+     * @return $this
+     */
+    public function addOption($option, $optionValue)
+    {
+        $this->constraints[$option] = $optionValue;
+
+        return $this;
     }
 
     /**
