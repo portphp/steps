@@ -103,6 +103,28 @@ class StepAggregatorSpec extends ObjectBehavior
         $this->shouldThrow($e)->duringProcess();
     }
 
+    function it_executes_the_writers_in_the_same_order_that_the_insertion(Writer $writerFoo, Writer $writerBar, Writer $writerBaz)
+    {
+        $this->beConstructedWith(new ArrayReader([['test' => 'test']]));
+        $writerFoo->prepare()->shouldBeCalled();
+        $writerBar->prepare()->shouldBeCalled();
+        $writerBaz->prepare()->shouldBeCalled();
+        $writerFoo->writeItem(Argument::type('array'))->will(function () use ($writerBar, $writerBaz) {
+            $writerBar->writeItem(Argument::type('array'))->will(function () use ($writerBaz) {
+                $writerBaz->writeItem(Argument::type('array'))->shouldBeCalled();
+            })->shouldBeCalled();
+        })->shouldBeCalled();
+        $writerFoo->finish()->shouldBeCalled();
+        $writerBar->finish()->shouldBeCalled();
+        $writerBaz->finish()->shouldBeCalled();
+
+        $this->addWriter($writerFoo);
+        $this->addWriter($writerBar);
+        $this->addWriter($writerBaz);
+
+        $this->process();
+    }
+
     protected function getReader()
     {
         return new ArrayReader([
