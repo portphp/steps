@@ -30,7 +30,7 @@ class ValidatorStep implements PriorityStep
     /**
      * @var integer
      */
-    private $line = 1;
+    private $line = 0;
 
     /**
      * @var ValidatorInterface
@@ -98,6 +98,8 @@ class ValidatorStep implements PriorityStep
      */
     public function process($item, callable $next)
     {
+        $this->line++;
+
         if (count($this->constraints) > 0) {
             $constraints = new Constraints\Collection($this->constraints);
             $list = $this->validator->validate($item, $constraints);
@@ -112,8 +114,6 @@ class ValidatorStep implements PriorityStep
                 throw new ValidationException($list, $this->line);
             }
         }
-
-        $this->line++;
 
         if (0 === count($list)) {
             return $next($item);
