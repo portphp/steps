@@ -196,7 +196,7 @@ class StepAggregator implements Workflow, LoggerAwareInterface
             $steps[-256][] = new Step\WriterStep($writer);
         }
 
-        ksort($steps);
+        krsort($steps);
 
         $sortedStep = [];
         /** @var Step[] $stepsAtSamePriority */
