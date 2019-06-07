@@ -63,7 +63,8 @@ class MappingStep implements Step
 
                 // Check if $item is an array, because properties can't be unset.
                 // So we don't call unset for objects to prevent side affects.
-                if (is_array($item) && array_key_exists($from, $item)) {
+                // Also, we don't have to unset the property if the key is the same
+                if (is_array($item) && array_key_exists($from, $item) && $from !== str_replace(['[',']'], '', $to)) {
                     unset($item[$from]);
                 }
             }
