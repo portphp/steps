@@ -2,6 +2,7 @@
 
 namespace Port\Steps;
 
+use DateTime;
 use Port\Exception;
 use Port\Reader;
 use Port\Result;
@@ -12,6 +13,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Seld\Signal\SignalHandler;
+use SplObjectStorage;
 
 /**
  * A mediator between a reader and one or more writers and converters
@@ -100,8 +102,8 @@ class StepAggregator implements Workflow, LoggerAwareInterface
     public function process()
     {
         $count      = 0;
-        $exceptions = new \SplObjectStorage();
-        $startTime  = new \DateTime;
+        $exceptions = new SplObjectStorage();
+        $startTime  = new DateTime;
 
         $signal = SignalHandler::create(['SIGTERM', 'SIGINT'], $this->logger);
 
@@ -137,7 +139,7 @@ class StepAggregator implements Workflow, LoggerAwareInterface
             $writer->finish();
         }
 
-        return new Result($this->name, $startTime, new \DateTime, $count, $exceptions);
+        return new Result($this->name, $startTime, new DateTime, $count, $exceptions);
     }
 
     /**

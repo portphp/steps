@@ -3,6 +3,7 @@
 namespace Port\Steps\Step;
 
 use Port\Steps\Step;
+use SplPriorityQueue;
 
 /**
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
@@ -10,13 +11,13 @@ use Port\Steps\Step;
 class FilterStep implements Step
 {
     /**
-     * @var \SplPriorityQueue
+     * @var SplPriorityQueue
      */
     private $filters;
 
     public function __construct()
     {
-        $this->filters = new \SplPriorityQueue();
+        $this->filters = new SplPriorityQueue();
     }
 
     /**
