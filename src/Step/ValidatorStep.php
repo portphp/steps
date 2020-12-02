@@ -118,6 +118,8 @@ class ValidatorStep implements PriorityStep
         if (0 === count($list)) {
             return $next($item);
         }
+
+        return null;
     }
 
     /**

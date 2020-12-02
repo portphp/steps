@@ -1,5 +1,10 @@
 suites:
-  step_suite:
+  library_suite:
     namespace: Port\Steps
     psr4_prefix: Port\Steps
+extensions:
+  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension: ~
 formatter.name: pretty
+code_coverage:
+  format: clover
+  output: build/phpspec.coverage.xml

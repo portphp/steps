@@ -19,15 +19,20 @@
     ],
     "support": {
         "issues": "https://github.com/portphp/portphp/issues",
-        "source": "https://github.com/portphp/boilerplate",
+        "source": "https://github.com/portphp/steps",
         "docs": "https://portphp.readthedocs.org"
     },
     "require": {
-        "php": ">=5.6.0",
-        "portphp/portphp": "^1.0.0",
+        "php": ">=7.3",
+        "portphp/portphp": "^2.0.0",
         "seld/signal-handler": "^1.0",
         "symfony/property-access": "^2.3 || ^3.0 || ^4.0 || ^5.0",
         "symfony/validator": "^2.5 || ^3.0 || ^4.0 || ^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.2.0",
+        "phpspec/phpspec": "^7.0",
+        "friends-of-phpspec/phpspec-code-coverage": "^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -37,10 +42,6 @@
     "conflict": {
         "symfony/validator": "<2.5"
     },
-    "require-dev": {
-        "phpspec/phpspec": "^2.2",
-        "henrikbjorn/phpspec-code-coverage" : "^1.0"
-    },
     "suggest": {
         "symfony/property-access": "Used in MappingStep",
         "symfony/validator": "Used in ValidatorStep"
@@ -49,5 +50,11 @@
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/klodoma/portphp-portphp"
+        }
+    ]
 }

@@ -3,6 +3,7 @@
 namespace spec\Port\Steps\Step;
 
 use Port\Steps\Step;
+use stdClass;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -117,7 +118,7 @@ class ValidatorStepSpec extends ObjectBehavior
     ) {
         $next = function() {};
         $list->count()->willReturn(1);
-        $item = new \stdClass();
+        $item = new stdClass();
         $validator->validate($item)->willReturn($list);
 
         $this->process(
@@ -136,7 +137,7 @@ class ValidatorStepSpec extends ObjectBehavior
         $numberOfCalls = 3;
         $next = function() {};
         $list->count()->willReturn(1);
-        $item = new \stdClass();
+        $item = new stdClass();
         $validator->validate($item)->willReturn($list);
 
         for ($i = 0; $i < $numberOfCalls; $i++) {
@@ -144,7 +145,7 @@ class ValidatorStepSpec extends ObjectBehavior
         }
 
         $this->getViolations()->shouldReturn(array_fill(1, $numberOfCalls, $list));
-    }    
+    }
 
     function it_tracks_lines_when_exceptions_are_thrown_during_process(
         Step $step,
