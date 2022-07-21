@@ -1,4 +1,4 @@
-name: Test
+name: Checks
 
 on:
   push:
@@ -42,9 +42,6 @@ jobs:
 
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress --ignore-platform-req="ext-*" ${{ matrix.composer-prefer }}
-
-      - name: Run test suite
-        run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
 
       - name: Run phpspec
         run: vendor/bin/phpspec run
