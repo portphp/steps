@@ -41,6 +41,8 @@ class ValidatorStepSpec extends ObjectBehavior
         $list->count()->willReturn(0);
         $validator->validate($item, Argument::type('Symfony\Component\Validator\Constraints\Collection'))->willReturn($list);
 
+        $constraint->groups = [];
+
         $this->add('foo', $constraint)->shouldReturn($this);
 
         $this->process(
@@ -59,6 +61,8 @@ class ValidatorStepSpec extends ObjectBehavior
         $list->count()->willReturn(1);
         $validator->validate($item, Argument::type('Symfony\Component\Validator\Constraints\Collection'))->willReturn($list);
 
+        $constraint->groups = [];
+
         $this->add('foo', $constraint)->shouldReturn($this);
 
         $this->process(
@@ -76,6 +80,8 @@ class ValidatorStepSpec extends ObjectBehavior
         $next = function() {};
         $item = ['foo' => true];
         $step->process($item, $next)->shouldNotBeCalled();
+
+        $constraint->groups = [];
 
         $this->add('foo', $constraint)->shouldReturn($this);
         $this->addOption('bar', 'baz')->shouldReturn($this);
@@ -99,6 +105,8 @@ class ValidatorStepSpec extends ObjectBehavior
         $step->process($item, $next)->shouldNotBeCalled();
         $list = new ConstraintViolationList([$violation->getWrappedObject()]);
         $validator->validate($item, Argument::type('Symfony\Component\Validator\Constraints\Collection'))->willReturn($list);
+
+        $constraint->groups = [];
 
         $this->add('foo', $constraint)->shouldReturn($this);
         $this->throwExceptions();
@@ -144,7 +152,7 @@ class ValidatorStepSpec extends ObjectBehavior
         }
 
         $this->getViolations()->shouldReturn(array_fill(1, $numberOfCalls, $list));
-    }    
+    }
 
     function it_tracks_lines_when_exceptions_are_thrown_during_process(
         Step $step,
@@ -160,6 +168,8 @@ class ValidatorStepSpec extends ObjectBehavior
             return $step->process($item, $next);
         };
         $item = ['foo' => 10];
+
+        $constraint->groups = [];
 
         $validator->validate($item, Argument::type('Symfony\Component\Validator\Constraints\Collection'))
             ->willReturn($errorList);
