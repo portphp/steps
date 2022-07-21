@@ -3,3 +3,5 @@ suites:
     namespace: Port\Steps
     psr4_prefix: Port\Steps
 formatter.name: pretty
+extensions:
+  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension: ~

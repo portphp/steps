@@ -69,9 +69,9 @@ class MappingStep implements Step
                 }
             }
         } catch (NoSuchPropertyException $exception) {
-            throw new MappingException('Unable to map item', null, $exception);
+            throw new MappingException('Unable to map item', 0, $exception);
         } catch (UnexpectedTypeException $exception) {
-            throw new MappingException('Unable to map item', null, $exception);
+            throw new MappingException('Unable to map item', 0, $exception);
         }
 
         return $next($item);
