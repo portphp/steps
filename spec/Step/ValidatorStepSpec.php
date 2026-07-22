@@ -103,6 +103,7 @@ class ValidatorStepSpec extends ObjectBehavior
         $next = function() {};
         $item = ['foo' => true];
         $step->process($item, $next)->shouldNotBeCalled();
+        $violation->getMessage()->willReturn('Invalid value');
         $list = new ConstraintViolationList([$violation->getWrappedObject()]);
         $validator->validate($item, Argument::type('Symfony\Component\Validator\Constraints\Collection'))->willReturn($list);
 
@@ -163,6 +164,7 @@ class ValidatorStepSpec extends ObjectBehavior
     {
         $numberOfCalls = 3;
         $next = function() {};
+        $violation->getMessage()->willReturn('Invalid value');
         $errorList = new ConstraintViolationList([$violation->getWrappedObject()]);
         $stepFunc = function($item) use ($step, $next) {
             return $step->process($item, $next);

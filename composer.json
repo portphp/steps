@@ -39,8 +39,8 @@
         "symfony/validator": "<2.5"
     },
     "require-dev": {
-        "phpspec/phpspec": "^7.2",
-        "friends-of-phpspec/phpspec-code-coverage": "^6.1"
+        "phpspec/phpspec": "^7.2 || ^8.0",
+        "friends-of-phpspec/phpspec-code-coverage": "^6.1 || ^7.0"
     },
     "suggest": {
         "symfony/property-access": "Used in MappingStep",
