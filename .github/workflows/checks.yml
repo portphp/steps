@@ -46,7 +46,12 @@ jobs:
             ${{ runner.os }}-composer-${{ matrix.php-versions }}-
 
       - name: Install dependencies
-        run: composer update --prefer-dist --no-progress --ignore-platform-req="ext-*"
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --prefer-dist --no-progress
+          else
+            composer update --prefer-dist --no-progress
+          fi
 
       - name: Run phpspec
         run: vendor/bin/phpspec run --config phpspec.yml.dist
