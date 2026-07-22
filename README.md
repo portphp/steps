@@ -1,9 +1,11 @@
 # portphp/steps
 
 [![Latest Version](https://img.shields.io/github/release/portphp/steps.svg?style=flat-square)](https://github.com/portphp/steps/releases)
-[![Build Status](https://travis-ci.org/portphp/steps.svg)](https://travis-ci.org/portphp/steps)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/portphp/steps/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/portphp/steps/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/portphp/steps/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/portphp/steps/?branch=master)
+[![CI](https://github.com/portphp/steps/actions/workflows/checks.yml/badge.svg?branch=master)](https://github.com/portphp/steps/actions/workflows/checks.yml)
+[![PHP Version](https://img.shields.io/packagist/php-v/portphp/steps.svg?style=flat-square)](https://packagist.org/packages/portphp/steps)
+
+**Requirements:** PHP ^8.2 (tested on 8.2–8.5).
+
 
 Step-based workflow for PortPHP.
 
@@ -22,7 +24,7 @@ of the Composer documentation.
 
 ## Documentation
 
-Documentation is available at https://portphp.readthedocs.org.
+Documentation is available at https://portphp.readthedocs.io.
 
 ## Issues and feature requests
 
