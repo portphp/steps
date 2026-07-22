@@ -1,7 +1,7 @@
 # portphp/steps
 
 [![Latest Version](https://img.shields.io/github/release/portphp/steps.svg?style=flat-square)](https://github.com/portphp/steps/releases)
-[![CI](https://github.com/portphp/steps/actions/workflows/checks.yml/badge.svg?branch=master)](https://github.com/portphp/steps/actions)
+[![CI](https://github.com/portphp/steps/actions/workflows/checks.yml/badge.svg?branch=master)](https://github.com/portphp/steps/actions/workflows/checks.yml)
 [![PHP Version](https://img.shields.io/packagist/php-v/portphp/steps.svg?style=flat-square)](https://packagist.org/packages/portphp/steps)
 
 **Requirements:** PHP ^8.2 (tested on 8.2–8.5).
